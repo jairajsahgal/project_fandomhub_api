@@ -4,8 +4,7 @@ from django.contrib.auth.models import BaseUserManager
 from django.utils.translation import gettext as _
 
 from apps.profiles.models import Profile
-from .choices import Role
-
+from .choices import RoleChoices
 
 class UserManager(BaseUserManager):
     """Manager for User model."""
