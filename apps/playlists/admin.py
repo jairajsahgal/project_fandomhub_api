@@ -1,78 +1,61 @@
 """Admin for Playlists App."""
 
 from django.contrib import admin
+from import_export.admin import ImportExportModelAdmin
 
-from .models import Playlist, PlaylistAnime, PlaylistManga
-
-
-@admin.register(Playlist)
-class PlaylistAdmin(admin.ModelAdmin):
-    """Admin for Playlist model."""
-
-    list_per_page = 25
-    search_fields = [
-        "user",
-    ]
-    list_display = [
-        "user",
-    ]
-    readonly_fields = [
-        "pk",
-    ]
-    ordering = [
-        "created_at",
-    ]
+from apps.utils.admin import BaseAdmin
+from .models import AnimeList, MangaList, AnimeListItem, MangaListItem
+from .resources import (
+    AnimeListResource,
+    MangaListResource,
+    AnimeListItemResource,
+    MangaListItemResource,
+)
 
 
-@admin.register(PlaylistAnime)
-class PlaylistAnimeAdmin(admin.ModelAdmin):
-    """Admin for PlaylistAnime model."""
+@admin.register(AnimeList)
+class AnimeListAdmin(ImportExportModelAdmin, BaseAdmin):
+    """Admin for AnimeList model."""
 
-    list_per_page = 25
-    search_fields = [
-        "playlist",
-    ]
-    list_display = [
-        "playlist",
-        "anime",
-    ]
-    list_filter = [
-        "is_watched",
-        "status",
-    ]
-    readonly_fields = [
-        "pk",
-    ]
-    autocomplete_fields = [
-        "anime",
-    ]
-    ordering = [
-        "created_at",
-    ]  # Order pending
+    ordering = ["-created_at"]
+    search_fields = ["user"]
+    list_display = ["user", "is_public", "is_available"]
+    list_filter = ["is_available", "is_public"]
+    readonly_fields = ["pk", "created_at", "updated_at"]
+    resource_class = AnimeListResource
 
 
-@admin.register(PlaylistManga)
-class PlaylistMangaAdmin(admin.ModelAdmin):
-    """Admin for PlaylistManga model."""
+@admin.register(MangaList)
+class MangaListAdmin(ImportExportModelAdmin, BaseAdmin):
+    """Admin for MangaList model."""
 
-    list_per_page = 25
-    search_fields = [
-        "playlist",
-    ]
-    list_display = [
-        "playlist",
-        "manga",
-    ]
-    list_filter = [
-        "is_watched",
-        "status",
-    ]
-    readonly_fields = [
-        "pk",
-    ]
-    autocomplete_fields = [
-        "manga",
-    ]
-    ordering = [
-        "created_at",
-    ]  # Order pending
+    ordering = ["-created_at"]
+    search_fields = ["user"]
+    list_display = ["user", "is_public", "is_available"]
+    list_filter = ["is_available", "is_public"]
+    readonly_fields = ["pk", "created_at", "updated_at"]
+    resource_class = MangaListResource
+
+
+@admin.register(AnimeListItem)
+class AnimeListItemAdmin(ImportExportModelAdmin, BaseAdmin):
+    """Admin for AnimeListItem model."""
+
+    ordering = ["-created_at"]
+    search_fields = ["anime_id"]
+    list_display = ["animelist_id", "anime_id", "is_available"]
+    list_filter = ["status", "is_watched"]
+    readonly_fields = ["pk", "created_at", "updated_at"]
+    resource_class = AnimeListItemResource
+
+
+@admin.register(MangaListItem)
+class MangaListItemItemAdmin(ImportExportModelAdmin, BaseAdmin):
+    """Admin for MangaListItem model."""
+
+    ordering = ["-created_at"]
+    search_fields = ["manga_id"]
+    list_display = ["mangalist_id", "manga_id", "is_available"]
+    list_filter = ["status", "is_read"]
+    readonly_fields = ["pk", "created_at", "updated_at"]
+    resource_class = MangaListItemResource

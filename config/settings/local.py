@@ -8,10 +8,7 @@ DEBUG = True
 
 SECRET_KEY = env("SECRET_KEY")
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1"
-]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "web"]
 
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
@@ -68,9 +65,11 @@ CACHES = {
 }
 
 MIDDLEWARE = [
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
     "social_django.middleware.SocialAuthExceptionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
     # "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     # "django.middleware.cache.UpdateCacheMiddleware",
@@ -81,6 +80,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
+    "apps.utils.middlewares.RequestLoggingMiddleware",
     # "apps.utils.middlewares.CensorshipMiddleware"
 ]
 
@@ -93,8 +93,7 @@ INTERNAL_IPS = [
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")

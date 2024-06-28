@@ -8,15 +8,16 @@ from .models import Review
 class ReviewReadSerializer(serializers.ModelSerializer):
     """Serializer for Review model (List/retrieve)."""
 
-    user = serializers.StringRelatedField()
+    user_id = serializers.StringRelatedField()
 
     class Meta:
         model = Review
         fields = [
             "id",
-            "user",
-            "comment",
+            "user_id",
             "rating",
+            "comment",
+            "is_spoiler",
             "created_at",
             "updated_at",
         ]
@@ -29,5 +30,6 @@ class ReviewWriteSerializer(serializers.ModelSerializer):
         model = Review
         fields = [
             "comment",
+            "is_spoiler",
             "rating",
         ]

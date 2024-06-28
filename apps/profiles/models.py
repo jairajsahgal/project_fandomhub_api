@@ -16,7 +16,7 @@ User = settings.AUTH_USER_MODEL
 class Profile(BaseModel):
     """Model definition for Profile."""
 
-    user = models.OneToOneField(
+    user_id = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name="profile",
@@ -26,7 +26,7 @@ class Profile(BaseModel):
     first_name = models.CharField(_("first name"), max_length=255, blank=True)
     last_name = models.CharField(_("last name"), max_length=255, blank=True)
     birth_date = models.DateField(_("birth date"), blank=True, null=True)
-    bio = models.TextField(_("bio"), blank=True)
+    bio = models.TextField(_("bio"), default="", blank=True)
     image = models.ImageField(
         _("image"),
         upload_to=profile_image_path,
@@ -58,7 +58,7 @@ class Profile(BaseModel):
         verbose_name_plural = _("profiles")
 
     def __str__(self):
-        return str(self.user)
+        return str(self.user_id.username)
 
     @property
     def full_name(self):

@@ -14,10 +14,8 @@ from drf_spectacular.views import (
 
 urlpatterns = [
     # Temp urls
-    path(
-        "",
-        RedirectView.as_view(pattern_name="swagger"),
-    ),
+    # path("", RedirectView.as_view(pattern_name="swagger")),
+    path("", RedirectView.as_view(url="/admin/")),
     # Admin urls
     path(
         "admin/",
@@ -35,14 +33,25 @@ urlpatterns = [
         name="redoc",
     ),
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    # Apps urls
-    path("", include("apps.contents.routers")),
-    path("", include("apps.categories.routers")),
-    path("", include("apps.persons.routers")),
-    path("", include("apps.users.routers")),
-    path("", include("apps.profiles.routers")),
-    path("", include("apps.playlists.routers")),
+    # Apps urls (Routers)
+    path("", include("apps.animes.routers")),
+    path("", include("apps.characters.routers")),
+    path("", include("apps.clubs.routers")),
+    path("", include("apps.genres.routers")),
+    path("", include("apps.mangas.routers")),
     path("", include("apps.news.routers")),
+    path("", include("apps.persons.routers")),
+    path("", include("apps.profiles.routers")),
+    path("", include("apps.producers.routers")),
+    # Apps urls (URLs)
+    path("", include("apps.users.urls")),
+    path("", include("apps.playlists.urls")),
+    path("", include("apps.randoms.urls")),
+    path("", include("apps.recommendations.urls")),
+    path("", include("apps.tops.urls")),
+    # path("", include("apps.reviews.urls")),
+    # path("", include("apps.utils.urls")),
+    path("", include("django_prometheus.urls")),
 ]
 
 

@@ -1,63 +1,21 @@
 """Admin for Users App."""
 
 from django.contrib import admin
-from django.utils.translation import gettext as _
+from import_export.admin import ImportExportModelAdmin
 
+from apps.utils.admin import BaseAdmin
 from .models import User
+from .resources import UserResource
 
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
+class UserAdmin(ImportExportModelAdmin, BaseAdmin):
     """Admin for User model."""
 
-    list_display = ["username", "email", "is_staff", "is_superuser",]
+    ordering = ["username"]
+    list_display = ["username", "email", "is_staff", "is_superuser"]
     list_display_links = ["username"]
     search_fields = ["username", "email", "first_name", "last_name"]
     list_filter = ["is_staff", "is_superuser", "is_active"]
-    list_per_page = 25
-    readonly_fields = [
-        "pk",
-    ]
-    ordering = [
-        "username",
-    ]
-
-    fieldsets = [
-        (
-            _("Account info"),
-            {"fields": ["pk", "username", "email", "password", "is_active"]},
-        ),
-        (_("Personal info"), {"fields": ["first_name", "last_name"]}),
-        (
-            _("Permissions"),
-            {
-                "fields": [
-                    "is_staff",
-                    "is_superuser",
-                    "roles",
-                ]
-            },
-        ),
-        (_("Records"), {"fields": ["last_login", "date_joined"]}),
-    ]
-
-    add_fieldsets = [
-        (
-            None,
-            {
-                "classes": [
-                    "wide",
-                ],
-                "fields": [
-                    "username",
-                    "email",
-                    "first_name",
-                    "last_name",
-                    "password1",
-                    "password2",
-                    "is_staff",
-                    "is_superuser",
-                ],
-            },
-        ),
-    ]
+    readonly_fields = ["pk"]
+    resource_class = UserResource
